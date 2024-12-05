@@ -1,0 +1,21 @@
+# depslib dependency file v1.0
+1733138596 source:c:\users\1522356\desktop\aeds1\header\headervetor\headerstring\stringiterativa\trabalhoaeds\ingredientes.c
+	<stdio.h>
+	<string.h>
+	"ingredientes.h"
+
+1733138669 c:\users\1522356\desktop\aeds1\header\headervetor\headerstring\stringiterativa\trabalhoaeds\ingredientes.h
+
+1733138640 source:c:\users\1522356\desktop\aeds1\header\headervetor\headerstring\stringiterativa\trabalhoaeds\pizza.c
+	<stdio.h>
+	<string.h>
+	"pizza.h"
+
+1733138671 c:\users\1522356\desktop\aeds1\header\headervetor\headerstring\stringiterativa\trabalhoaeds\pizza.h
+	"ingredientes.h"
+
+1733138616 source:c:\users\1522356\desktop\aeds1\header\headervetor\headerstring\stringiterativa\trabalhoaeds\main.c
+	<stdio.h>
+	"pizza.h"
+	"ingredientes.h"
+

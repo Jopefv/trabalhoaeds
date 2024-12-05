@@ -1,0 +1,13 @@
+1;Calabresa;G;27.00;2
+1;Massa
+2;Queijo
+
+2;Calabreso;P;23.00;2
+1;Massa
+2;Queijo
+1;Calabresa;G;27.00;2
+1;Massa
+2;Queijo
+2;Arroz;M;15.99;2
+1;Massa
+2;Queijo
