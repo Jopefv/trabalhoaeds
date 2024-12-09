@@ -32,7 +32,7 @@ void menuPizzas() {
                 printf("Voltando ao menu principal...\n");
                 break;
             default:
-                printf("OpÁ„o inv·lida! Tente novamente.\n");
+                printf("Op√ß√£o inv√°lida! Tente novamente.\n");
         }
     } while (opcao != 0);
 }
@@ -100,7 +100,7 @@ int main() {
                 menuIngredientes();
                 break;
             case 3:
-                 venderPizza();
+                printf("Fun√ß√£o de vendas ainda n√£o implementada.\n");
                 break;
             case 4:
                 exportarPizzas();
@@ -118,7 +118,7 @@ int main() {
                 printf("Saindo do sistema...\n");
                 break;
             default:
-                printf("OpÁ„o inv·lida! Tente novamente.\n");
+                printf("Op√ß√£o inv√°lida! Tente novamente.\n");
         }
     } while (opcao != 0);
 
