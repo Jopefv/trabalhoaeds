@@ -1,0 +1,43 @@
+# Definindo as variáveis do Makefile
+CC = gcc                   # Compilador C
+CFLAGS = -Wall -g           # Flags de compilação
+OBJ = main.o pizza.o ingrediente.o  # Arquivos objeto
+EXEC = pizzaria.exe         # Nome do executável
+
+# Regra padrão: compilar e gerar o executável
+all: $(EXEC)
+
+# Criar o executável a partir dos objetos
+$(EXEC): $(OBJ)
+	$(CC) $(OBJ) -o $(EXEC)
+
+# Compilação de cada arquivo .c para .o
+main.o: main.c pizza.h ingrediente.h
+	$(CC) $(CFLAGS) -c main.c
+
+pizza.o: pizza.c pizza.h
+	$(CC) $(CFLAGS) -c pizza.c
+
+ingrediente.o: ingrediente.c ingrediente.h
+	$(CC) $(CFLAGS) -c ingrediente.c
+
+# Regra para limpar os arquivos compilados
+clean:
+	rm -f $(OBJ) $(EXEC)
+
+# Regra para executar o programa
+run: $(EXEC)
+	./$(EXEC)
+
+# Instrução para compilar o código em modo de depuração
+debug: CFLAGS += -DDEBUG
+debug: clean all
+
+# Regra para criar um arquivo de dependência (caso haja alterações)
+depend: .depend
+
+.depend: $(SRC)
+	$(CC) -MM $(SRC) > .depend
+
+# Incluir o arquivo de dependência
+-include .depend
