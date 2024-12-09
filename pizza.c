@@ -7,10 +7,11 @@
 Pizza pizzas[MAX_PIZZAS];
 int qtd_pizzas = 0;
 
+
 void exportarPizzas() {
-    FILE *arquivo = fopen("eximppizza.txt", "w");
+    FILE *arquivo = fopen("eximppizza.txt", "a");
     if (arquivo == NULL) {
-        printf("Erro ao salvar pizzas.\n");
+        printf("Erro ao exportar pizzas.\n");
         return;
     }
 
@@ -25,16 +26,15 @@ void exportarPizzas() {
     }
 
     fclose(arquivo);
+    printf("Pizzas exportadas com sucesso para arquivo.\n");
 }
 
 void importarPizzas() {
     FILE *arquivo = fopen("eximppizza.txt", "r");
     if (arquivo == NULL) {
-        printf("Erro ao importar pizzas.\n");
+        printf("Erro ao importar pizza.\n");
         return;
     }
-
-    qtd_pizzas = 0; // Reiniciar a lista de pizzas
 
     while (fscanf(arquivo, "%d;%[^;];%c;%f;%d\n",
                   &pizzas[qtd_pizzas].id, pizzas[qtd_pizzas].nome,
@@ -42,14 +42,16 @@ void importarPizzas() {
                   &pizzas[qtd_pizzas].qtd_ingredientes) == 5) {
         for (int i = 0; i < pizzas[qtd_pizzas].qtd_ingredientes; i++) {
             fscanf(arquivo, "%d;%[^\n]\n",
-                   &pizzas[qtd_pizzas].ingredientes[i].id, pizzas[qtd_pizzas].ingredientes[i].nome);
+                    &pizzas[qtd_pizzas].ingredientes[i].id, pizzas[qtd_pizzas].ingredientes[i].nome);
         }
+
         qtd_pizzas++;
     }
 
     fclose(arquivo);
     printf("Pizzas importadas com sucesso.\n");
 }
+
 
 void adicionarPizza() {
     if (qtd_pizzas >= MAX_PIZZAS) {
@@ -78,7 +80,6 @@ void adicionarPizza() {
     }
 
     pizzas[qtd_pizzas++] = novaPizza;
-    exportarPizzas();
     printf("Pizza adicionada com sucesso!\n");
 }
 
@@ -87,12 +88,6 @@ void visualizarPizzas() {
     for (int i = 0; i < qtd_pizzas; i++) {
         printf("ID: %d | Nome: %s | Tamanho: %c | Preco: %.2f\n",
                pizzas[i].id, pizzas[i].nome, pizzas[i].tamanho, pizzas[i].preco);
-
-        printf("Ingredientes:\n");
-        for (int j = 0; j < pizzas[i].qtd_ingredientes; j++) {
-            printf("\tID: %d | Nome: %s\n",
-                   pizzas[i].ingredientes[j].id, pizzas[i].ingredientes[j].nome);
-        }
     }
 }
 
@@ -109,16 +104,6 @@ void editarPizza() {
             scanf(" %c", &pizzas[i].tamanho);
             printf("Novo preco: ");
             scanf("%f", &pizzas[i].preco);
-
-            printf("Editar quantidade de ingredientes (atual: %d): ", pizzas[i].qtd_ingredientes);
-            scanf("%d", &pizzas[i].qtd_ingredientes);
-
-            for (int j = 0; j < pizzas[i].qtd_ingredientes; j++) {
-                printf("Ingrediente %d (id e nome): ", j + 1);
-                scanf("%d %[^\n]", &pizzas[i].ingredientes[j].id, pizzas[i].ingredientes[j].nome);
-            }
-
-            exportarPizzas();
             printf("Pizza editada com sucesso!\n");
             return;
         }
@@ -137,86 +122,9 @@ void removerPizza() {
                 pizzas[j] = pizzas[j + 1];
             }
             qtd_pizzas--;
-            exportarPizzas();
             printf("Pizza removida com sucesso!\n");
             return;
         }
     }
     printf("Pizza nao encontrada.\n");
-}
-
-
-void venderPizza() {
-    int idPizza, qtdExtras, idExtra;
-    float precoFinal = 0;
-
-    printf("\n--- Realizar Venda de Pizza ---\n");
-
-    // Exibir pizzas disponíveis
-    visualizarPizzas();
-
-    // Selecionar pizza
-    printf("\nDigite o ID da pizza que deseja vender: ");
-    scanf("%d", &idPizza);
-
-    // Buscar pizza pelo ID
-    Pizza *pizzaSelecionada = NULL;
-    for (int i = 0; i < qtd_pizzas; i++) {
-        if (pizzas[i].id == idPizza) {
-            pizzaSelecionada = &pizzas[i];
-            break;
-        }
-    }
-
-    if (pizzaSelecionada == NULL) {
-        printf("Pizza não encontrada!\n");
-        return;
-    }
-
-    // Exibir detalhes da pizza selecionada
-    printf("\nPizza Selecionada: %s\n", pizzaSelecionada->nome);
-    printf("Preço Base: %.2f\n", pizzaSelecionada->preco);
-    precoFinal = pizzaSelecionada->preco;
-
-    // Adicionar ingredientes extras
-    printf("\nDeseja adicionar ingredientes extras? (0 = Não, 1 = Sim): ");
-    int adicionarExtras;
-    scanf("%d", &adicionarExtras);
-
-    if (adicionarExtras) {
-        printf("Quantos ingredientes extras deseja adicionar? ");
-        scanf("%d", &qtdExtras);
-
-        for (int i = 0; i < qtdExtras; i++) {
-            // Exibir ingredientes disponíveis
-            visualizarIngredientes();
-
-            printf("\nDigite o ID do ingrediente extra %d: ", i + 1);
-            scanf("%d", &idExtra);
-
-            // Buscar ingrediente pelo ID
-            Ingrediente *ingredienteSelecionado = NULL;
-            for (int j = 0; j < qtd_ingredientes; j++) {
-                if (ingredientes[j].id == idExtra) {
-                    ingredienteSelecionado = &ingredientes[j];
-                    break;
-                }
-            }
-
-            if (ingredienteSelecionado == NULL) {
-                printf("Ingrediente não encontrado! Ignorando...\n");
-                continue;
-            }
-
-            // Adicionar preço do ingrediente ao preço final
-            printf("Ingrediente Adicionado: %s (%.2f)\n", ingredienteSelecionado->nome, ingredienteSelecionado->preco);
-            precoFinal += ingredienteSelecionado->preco;
-        }
-    }
-
-    // Exibir preço final
-    printf("\n--- Venda Finalizada ---\n");
-    printf("Pizza: %s\n", pizzaSelecionada->nome);
-    printf("Preço Final: %.2f\n", precoFinal);
-    printf("--------------------------\n");
 }
